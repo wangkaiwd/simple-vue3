@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "private": false,
   "description": "",
-  "main": "build/my-lib.cjs.js",
-  "module": "build/my-lib.es.js",
-  "types": "build/my-lib.d.ts",
+  "main": "build/simple-vue3.cjs.js",
+  "module": "build/simple-vue3.es.js",
+  "types": "build/simple-vue3.d.ts",
   "scripts": {
     "prepare": "husky install",
     "cm": "cz",
@@ -29,7 +29,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wangkaiwd/typescript-library-template.git"
+    "url": "git+https://github.com/wangkaiwd/simple-vue3.git"
   },
   "keywords": [],
   "author": "",

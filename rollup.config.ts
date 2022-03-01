@@ -19,8 +19,8 @@ export default {
       sourcemap: !isProd
     },
     {
-      file: 'build/my-lib.global.js',
-      name: 'MyLib',
+      file: 'build/simple-vue3.global.js',
+      name: 'SimpleVue3',
       format: 'iife',
       sourcemap: !isProd
     },
