@@ -1,15 +1,18 @@
 import { defineConfig } from 'vitepress';
 
 export default defineConfig({
-  title: 'TypeScript Library Template',
-  description: 'Write TypeScript Library without extra ',
-  base: '/typescript-library-template/',
+  title: 'simple vue3',
+  description: 'implement simple feature of vue3 to study source code of vue3',
+  base: '/simple-vue3/',
   head: [
-    ['link', {
-      rel: 'icon',
-      type: 'image/x-icon',
-      href: 'https://raw.githubusercontent.com/wangkaiwd/drawing-bed/master/81249231_padded_logo.png'
-    }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: 'https://raw.githubusercontent.com/wangkaiwd/drawing-bed/master/81249231_padded_logo.png'
+      }
+    ],
   ],
   themeConfig: {
     // Type is `DefaultTheme.Config`
@@ -17,17 +20,13 @@ export default defineConfig({
     nav: [
       {
         text: 'GitHub',
-        link: 'https://github.com/wangkaiwd/typescript-library-template',
+        link: 'https://github.com/wangkaiwd/simple-vue3',
       },
     ],
     sidebar: [
       {
         text: '快速上手',
         link: '/'
-      },
-      {
-        text: '打包和发布',
-        link: '/tutorial'
       }
     ]
   },
