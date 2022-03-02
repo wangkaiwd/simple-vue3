@@ -15,8 +15,8 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "release": "node scripts/release.js",
-    "test": "jest --coverage=false",
-    "test:coverage": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage=true"
   },
   "lint-staged": {
     "lib/**/*.{ts,js}": [

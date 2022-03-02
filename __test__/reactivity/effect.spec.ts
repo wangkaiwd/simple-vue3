@@ -11,7 +11,6 @@ describe('Effect', () => {
   });
   it('should proxy deep object and update proxy object will trigger effect parameter fn', () => {
     const person = reactive({ x: { name: 'y' } });
-    console.log('person', person);
     const fn = jest.fn(() => person.x.name);
     effect(fn);
     person.x.name = 'zzz';
