@@ -1,5 +1,7 @@
 import { EffectFn } from "../types";
 
+// target -> prop -> [fn,fn]
+
 let activeEffectFn: EffectFn | null = null;
 const targetMap = new WeakMap();
 export const trigger = (
