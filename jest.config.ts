@@ -5,7 +5,7 @@
 
 export default {
   clearMocks: true,
-  collectCoverage: true,
+  collectCoverage: false,
   coverageDirectory: 'coverage',
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
