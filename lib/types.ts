@@ -1,4 +1,10 @@
-export type EffectFn = () => void;
+export type Fn = () => any;
+
+export interface EffectFn {
+  (): Fn;
+  id: number;
+  scheduler?: () => any;
+}
 
 export interface ProxyHandler<T extends object> {
   apply?(target: T, thisArg: any, argArray: any[]): any;

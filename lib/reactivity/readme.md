@@ -4,9 +4,11 @@
 
 API:
 * reactive,shallowReactive,readonlyReactive
-* ref
-* toRef,toRefs
-
+* ref,shallowRef
+* toRef
+* toRefs
+* computed
+* watch
 
 thinking:
 * vue2
@@ -38,3 +40,5 @@ function createGetter (isShallow: boolean = false, isReadonly: boolean = false) 
 * add new property for proxy object, it will auto trigger get method
   * add value is deep object also proxied because of deep proxy. Access deep object always return proxy object
 * change proxy object will correspond change origin object, but direct change origin object not trigger set/get method, so don't update view
+* computed
+  * core: create effect with `{lazy: true}` in computed

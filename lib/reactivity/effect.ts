@@ -1,7 +1,8 @@
-import { EffectFn } from "../types";
+import { EffectFn, Fn } from "../types";
 
 // target -> prop -> [fn,fn]
 
+let id = 0;
 let activeEffectFn: EffectFn | null = null;
 const stack: EffectFn[] = [];
 
@@ -16,7 +17,13 @@ export const trigger = (
   prop: string | symbol
 ) => {
   const effectSet = targetMap.get(target)?.get(prop) ?? [];
-  [...effectSet].forEach((fn: any) => fn());
+  [...effectSet].forEach((fn: EffectFn) => {
+    if (fn.scheduler) {
+      fn.scheduler();
+    } else {
+      fn();
+    }
+  });
 };
 
 export const track = (type: string, target: object, prop: string | symbol) => {
@@ -36,10 +43,29 @@ export const track = (type: string, target: object, prop: string | symbol) => {
   }
 };
 
-export const effect = (fn: EffectFn) => {
-  stack.push(fn);
-  activeEffectFn = getActiveEffectFn();
-  fn(); // trigger get method to collect dep
-  stack.pop();
-  activeEffectFn = getActiveEffectFn();
+interface EffectOptions {
+  lazy?: boolean;
+  scheduler?: EffectFn["scheduler"];
+}
+
+const createReactiveEffect = (fn: EffectFn) => {
+  return () => {
+    stack.push(fn);
+    activeEffectFn = getActiveEffectFn();
+    const result = fn(); // trigger get method to collect dep
+    stack.pop();
+    activeEffectFn = getActiveEffectFn();
+    return result;
+  };
+};
+export const effect = (fn: Fn, options?: EffectOptions) => {
+  const effectFn = fn as EffectFn;
+  id++;
+  effectFn.id = id;
+  effectFn.scheduler = options?.scheduler;
+  const reactiveEffect = createReactiveEffect(effectFn);
+  if (!options?.lazy) {
+    reactiveEffect(); // trigger get method to collect dep
+  }
+  return reactiveEffect;
 };

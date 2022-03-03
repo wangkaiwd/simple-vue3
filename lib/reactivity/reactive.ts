@@ -1,6 +1,7 @@
 import { track, trigger } from "./effect";
 import { isPlainObject } from "../shared";
 import { ProxyHandler } from "../types";
+import { hasChanged } from "../shared/helpers";
 
 enum ReactiveFlags {
   IS_REACTIVE = "__v_isReactive",
@@ -36,7 +37,9 @@ function createSetter() {
   ) {
     // first set value
     const result = Reflect.set(target, prop, value, receiver);
-    trigger("set", target, prop);
+    if (!hasChanged(value, (target as any)[prop])) {
+      trigger("set", target, prop);
+    }
     return result;
   };
 }
