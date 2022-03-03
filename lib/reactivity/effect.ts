@@ -3,6 +3,12 @@ import { EffectFn } from "../types";
 // target -> prop -> [fn,fn]
 
 let activeEffectFn: EffectFn | null = null;
+const stack: EffectFn[] = [];
+
+function getActiveEffectFn() {
+  return stack[stack.length - 1] ?? null;
+}
+
 const targetMap = new WeakMap();
 export const trigger = (
   type: string,
@@ -31,6 +37,9 @@ export const track = (type: string, target: object, prop: string | symbol) => {
 };
 
 export const effect = (fn: EffectFn) => {
-  activeEffectFn = fn;
-  fn();
+  stack.push(fn);
+  activeEffectFn = getActiveEffectFn();
+  fn(); // trigger get method to collect dep
+  stack.pop();
+  activeEffectFn = getActiveEffectFn();
 };

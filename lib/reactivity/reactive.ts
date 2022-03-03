@@ -15,6 +15,7 @@ function createGetter(isShallow: boolean = false, isReadonly: boolean = false) {
     if (prop === ReactiveFlags.IS_REACTIVE) {
       return true;
     }
+    // console.log('prop', prop);
     track("get", target, prop);
     const result = Reflect.get(target, prop, receiver);
     if (!isShallow && !isReadonly && isPlainObject(result)) {
@@ -33,8 +34,10 @@ function createSetter() {
     value: any,
     receiver: any
   ) {
+    // first set value
+    const result = Reflect.set(target, prop, value, receiver);
     trigger("set", target, prop);
-    return Reflect.set(target, prop, value, receiver);
+    return result;
   };
 }
 

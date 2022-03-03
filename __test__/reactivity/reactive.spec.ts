@@ -6,4 +6,7 @@ describe('Reactive', () => {
     const proxy1 = reactive(proxy);
     expect(proxy).toBe(proxy1);
   });
+  it('should proxy non object value will return it self', () => {
+
+  });
 });

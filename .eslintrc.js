@@ -37,7 +37,12 @@ module.exports = {
     'no-plusplus': 0,
     'guard-for-in': 0,
     'func-names': 0,
-    'no-use-before-define': 0
+    'no-use-before-define': 0,
+    'no-underscore-dangle': 0,
+    'arrow-body-style': 0,
+    'no-empty-function': 0,
+    'no-useless-constructor': 0,
+    'max-classes-per-file': 0
   },
   settings: {
     'import/extensions': 'off',
