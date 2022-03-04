@@ -6,7 +6,7 @@ import { computed, effect, ref } from '../../lib';
 //    1. dependence value update will trigger
 //    2. dependence value update will make view update
 // 3. it also can set setter method
-describe('Computed', () => {
+describe('Reactivity/Computed', () => {
   it('should return ref', () => {
     const count = ref(1);
     const computedFn = jest.fn(() => {

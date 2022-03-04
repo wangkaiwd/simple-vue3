@@ -1,7 +1,7 @@
-import { effect, isReactive, reactive } from '../../lib';
+import { effect, reactive } from '../../lib';
 // import { effect, reactive } from 'vue';
 
-describe('Effect', () => {
+describe('Reactivity/Effect', () => {
   it('should proxy shallow object and update proxy object will trigger effect parameter fn', () => {
     const person = reactive({ name: 'xx' });
     const fn = jest.fn(() => person.name);
@@ -9,6 +9,25 @@ describe('Effect', () => {
     expect(fn).toHaveBeenCalledTimes(1);
     person.name = 'yy';
     expect(fn).toHaveBeenCalledTimes(2);
+  });
+  it('should return cache fn function to ensure collect correct dep', () => {
+    const person = reactive({ name: 'xx', age: 12 });
+    const effectFn1 = jest.fn(() => {
+      return person.age;
+    });
+    const effectFn2 = jest.fn(() => {
+      return person.name;
+    });
+    const resultFn = effect(effectFn1);
+    effect(() => {
+      effectFn2();
+      // effectFn1 into stack
+      // person.age -> effectFn1
+      resultFn();
+    });
+    person.age = 20;
+    expect(effectFn1).toHaveBeenCalledTimes(3);
+    expect(effectFn2).toHaveBeenCalledTimes(1);
   });
   it('should proxy deep object and update proxy object will trigger effect parameter fn', () => {
     const person = reactive({ x: { name: 'y' } });

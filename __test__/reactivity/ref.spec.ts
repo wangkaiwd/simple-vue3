@@ -1,6 +1,6 @@
 import { effect, reactive, ref, toRef } from '../../lib';
 
-describe('Ref', () => {
+describe('Reactivity/Ref', () => {
   describe('create reactive object', () => {
     it('should take primitive value as parameter and return reactive object', () => {
       const counter = ref(0);
@@ -18,7 +18,7 @@ describe('Ref', () => {
   });
 });
 // https://vuejs.org/api/reactivity-utilities.html#toref
-describe('ToRef', () => {
+describe('Reactivity/ToRef', () => {
   // toRef only a simple get/set class
   // note: fooRef = ref(state.foo) is not synced with state.foo
   it('should create a ref for a property on a source reactive object', () => {
