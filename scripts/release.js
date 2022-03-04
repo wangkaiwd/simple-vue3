@@ -61,6 +61,9 @@ const build = async () => {
   }
 };
 const doRelease = async (version) => {
+  step('\nRun tests...');
+  await ifDryRun('npm', ['run', 'test']);
+
   step('\nBuild package...');
   await build();
   step('\nBump version...');
