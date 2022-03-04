@@ -1,5 +1,5 @@
 import { track, trigger } from "./effect";
-import { isPlainObject } from "../shared";
+import { isArray, isObject, isStringNumber } from "../shared";
 import { ProxyHandler } from "../types";
 import { hasChanged } from "../shared/helpers";
 
@@ -13,13 +13,19 @@ function createGetter(isShallow: boolean = false, isReadonly: boolean = false) {
     prop: string | symbol,
     receiver: any
   ): any {
+    // console.log('get-prop', prop);
     if (prop === ReactiveFlags.IS_REACTIVE) {
       return true;
     }
-    // console.log('prop', prop);
-    track("get", target, prop);
     const result = Reflect.get(target, prop, receiver);
-    if (!isShallow && !isReadonly && isPlainObject(result)) {
+
+    // if (isArray(target) && !isStringNumber(prop as string) && prop !== 'length') {
+    //   // omit push
+    // } else {
+    //   track('get', target, prop);
+    // }
+    track("get", target, prop);
+    if (!isShallow && !isReadonly && isObject(result)) {
       // return proxy value
       return reactive(result);
     }
@@ -35,10 +41,13 @@ function createSetter() {
     value: any,
     receiver: any
   ) {
-    // first set value
+    // console.log('set-prop', prop);
+    const hasKey = isArray(target)
+      ? !(isStringNumber(prop as string) && Number(prop) >= target.length)
+      : prop in target;
     const result = Reflect.set(target, prop, value, receiver);
-    if (!hasChanged(value, (target as any)[prop])) {
-      trigger("set", target, prop);
+    if (prop !== "length" && !hasChanged(value, (target as any)[prop])) {
+      trigger(hasKey ? "set" : "add", target, prop);
     }
     return result;
   };
@@ -54,7 +63,7 @@ const createReactiveObject = <T extends object>(
   target: T,
   handler: ProxyHandler<T>
 ) => {
-  if (!isPlainObject(target)) {
+  if (!isObject(target)) {
     return target;
   }
   if (isReactive(target)) {

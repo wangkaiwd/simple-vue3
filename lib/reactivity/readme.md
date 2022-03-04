@@ -41,4 +41,23 @@ function createGetter (isShallow: boolean = false, isReadonly: boolean = false) 
   * add value is deep object also proxied because of deep proxy. Access deep object always return proxy object
 * change proxy object will correspond change origin object, but direct change origin object not trigger set/get method, so don't update view
 * computed
-  * core: create effect with `{lazy: true}` in computed
+  * core: create effect with `{lazy: true, scheduler: () => { //...}}` in computed
+* add new value by array index isn't trigger get method:
+```ts
+const proxy = reactive([1, 2, 3]);
+// this won't trigger length property set method
+// set: 3 (don't get)
+proxy[3] = 100;
+```
+
+### Proxy
+
+Array,Object
+* add
+* delete
+* change
+* get
+
+Change array
+* push,pop; unshift,shift;splice;sort;reverse
+* change length

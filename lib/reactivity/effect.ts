@@ -1,4 +1,5 @@
 import { EffectFn, Fn } from "../types";
+import { isArray } from "../shared";
 
 // target -> prop -> [fn,fn]
 
@@ -12,12 +13,27 @@ function getActiveEffectFn() {
 
 const targetMap = new WeakMap();
 export const trigger = (
-  type: string,
+  type: "add" | "set",
   target: object,
   prop: string | symbol
 ) => {
-  const effectSet = targetMap.get(target)?.get(prop) ?? [];
-  [...effectSet].forEach((fn: EffectFn) => {
+  const depMap = targetMap.get(target);
+  if (!depMap) {
+    return;
+  }
+  const effectFns = [...(depMap.get(prop) ?? [])];
+  switch (type) {
+    case "add":
+      if (isArray(target)) {
+        const lengthEffect = depMap.get("length");
+        effectFns.push(...lengthEffect);
+      }
+      break;
+    default:
+      break;
+  }
+  // console.log('effect', effectFns);
+  effectFns.forEach((fn: EffectFn) => {
     if (fn.scheduler) {
       fn.scheduler();
     } else {
