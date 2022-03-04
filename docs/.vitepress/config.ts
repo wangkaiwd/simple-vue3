@@ -25,7 +25,7 @@ export default defineConfig({
     ],
     sidebar: [
       {
-        text: '快速上手',
+        text: 'Getting Start',
         link: '/'
       }
     ]
