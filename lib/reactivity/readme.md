@@ -43,6 +43,7 @@ function createGetter (isShallow: boolean = false, isReadonly: boolean = false) 
 * computed
   * core: create effect with `{lazy: true, scheduler: () => { //...}}` in computed
 * add new value by array index isn't trigger get method:
+  * `push` will also trigger set method for `length` prop
 ```ts
 const proxy = reactive([1, 2, 3]);
 // this won't trigger length property set method
