@@ -14,6 +14,9 @@ thinking:
 * vue2
 * vue3: Map,Set
 
+### document
+* Note that refs are not unwrapped when accessed as array or collection elements
+
 ### Notes
 * access deep object need return your proxy object instead of normal project
 ```ts

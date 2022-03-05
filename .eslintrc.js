@@ -42,7 +42,8 @@ module.exports = {
     'arrow-body-style': 0,
     'no-empty-function': 0,
     'no-useless-constructor': 0,
-    'max-classes-per-file': 0
+    'max-classes-per-file': 0,
+    'no-multi-assign': 0
   },
   settings: {
     'import/extensions': 'off',

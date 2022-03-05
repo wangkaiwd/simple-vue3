@@ -1,2 +1,3 @@
 export * from "./reactivity";
-export { reactive } from "./reactivity/reactive";
+export * from "./runtime-dom";
+export * from "./runtime-core";
