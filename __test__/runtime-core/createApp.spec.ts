@@ -28,7 +28,7 @@ describe('RuntimeCore/CreateApp', () => {
         const state = reactive({ name: 'xx', age: 10 });
         setTimeout(() => {
           state.name = 'yyy';
-          expect(app.children[0]).toBe('<h2>yyy</h2>');
+          expect(app.children[0].outerHTML).toBe('<h2>yyy</h2>');
           done();
         }, 1000);
         return {

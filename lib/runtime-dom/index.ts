@@ -1,4 +1,5 @@
 import { patch } from "../runtime-core/patch";
+import { effect } from "../reactivity";
 
 export const createApp = (rootComponent: any, rootProps?: any) => {
   const app = {
@@ -12,8 +13,11 @@ export const createApp = (rootComponent: any, rootProps?: any) => {
         {},
         { emit: {}, attrs: rootProps, expose: () => {}, slots: {} }
       );
-      const subTree = render.call(setupState);
-      patch(subTree, null, container);
+      effect(() => {
+        container.innerHTML = "";
+        const subTree = render.call(setupState);
+        patch(subTree, null, container);
+      });
     },
   };
   return app;
