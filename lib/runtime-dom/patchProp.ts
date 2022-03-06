@@ -24,7 +24,7 @@ function createInvoker(next) {
   return invoker;
 }
 
-const patchListener = (el, key, next) => {
+const patchEvents = (el, key, next) => {
   const event = key.slice(2).toLowerCase();
   // vei = vue event invokers
   const invokers = (el._vei = el._vei || {});
@@ -54,7 +54,7 @@ export const patchProp = (el: HTMLElement, key: string, prev, next) => {
     patchStyle(el, prev, next);
   } else if (onRE.test(key)) {
     // else
-    patchListener(el, key, next); //
+    patchEvents(el, key, next); //
   } else {
     el.setAttribute(key, next);
   }
