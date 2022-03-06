@@ -45,6 +45,7 @@ function createGetter (isShallow: boolean = false, isReadonly: boolean = false) 
 * change proxy object will correspond change origin object, but direct change origin object not trigger set/get method, so don't update view
 * computed
   * core: create effect with `{lazy: true, scheduler: () => { //...}}` in computed
+  * effect function will [return reactive effect](https://github.com/wangkaiwd/simple-vue3/blob/e37cdb60e90c7abc4f31884f764666725391dd86/__test__/reactivity/effect.spec.ts#L13-L31) fn which will cache fn that pass to effect and operate it with stack
 * add new value by array index isn't trigger get method:
   * `push` will also trigger set method for `length` prop
 ```ts
