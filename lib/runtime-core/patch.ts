@@ -1,8 +1,8 @@
 import { isBuiltInHtmlTag } from "../shared/utils";
 
 function mountElement(n1, container) {
-  const { tag, children } = n1;
-  const el = (n1.el = document.createElement(tag));
+  const { type, children } = n1;
+  const el = (n1.el = document.createElement(type));
   children.forEach((child) => {
     if (typeof child === "string") {
       el.innerHTML = child;
@@ -14,11 +14,9 @@ function mountElement(n1, container) {
 }
 
 const mount = (n1, container) => {
-  const { tag } = n1;
-  if (isBuiltInHtmlTag(tag)) {
+  const { type } = n1;
+  if (isBuiltInHtmlTag(type)) {
     mountElement(n1, container);
-    // eslint-disable-next-line no-empty
-  } else {
   }
 };
 

@@ -9,13 +9,12 @@ import { isArray } from "../shared";
 //   children: ['hello', { tag: 'span', key: '2', props: { id: 'span' }, children: ['world'] }]
 // };
 export const h = (
-  tag: any,
+  type: any,
   props: Record<string, any>,
   children: any | any[]
 ) => {
-  const { key, ...rest } = props;
   if (!isArray(children)) {
     children = [children];
   }
-  return createVNode(tag, key, rest, children);
+  return createVNode(type, props, children);
 };

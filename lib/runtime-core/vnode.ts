@@ -1,13 +1,13 @@
 export const createVNode = (
-  tag: any,
-  key: string | number,
+  type: any,
   props: Record<string, any>,
-  children: any[]
+  children: any[] = []
 ) => {
+  const { key, ...rest } = props;
   return {
-    tag,
+    type,
     key,
-    props,
+    props: rest,
     children,
   };
 };
