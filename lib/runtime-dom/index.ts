@@ -2,6 +2,7 @@ import { nodeOps } from "./nodeOps";
 import { patchProp } from "./patchProp";
 import { createRenderer } from "../runtime-core/renderer";
 
+export const { render } = createRenderer({ patchProp, ...nodeOps });
 export const createApp = (rootComponent: any, rootProps?: any) => {
   const app = createRenderer({ patchProp, ...nodeOps }).createApp(
     rootComponent,

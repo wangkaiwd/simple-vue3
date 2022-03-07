@@ -1,2 +1,2 @@
 export const isBuiltInHtmlTag = (tag: string) =>
-  ["div", "h1", "h2", "span", "p", "ul", "li"].includes(tag);
+  ["div", "h1", "h2", "h3", "span", "p", "ul", "li"].includes(tag);

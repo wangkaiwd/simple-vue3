@@ -1,6 +1,7 @@
 import { apiCreateApp } from "./apiCreateApp";
 import { isBuiltInHtmlTag } from "../shared/utils";
 import { effect, unref } from "../reactivity";
+import { isSameVNode } from "./vnode";
 
 let uid = 0;
 export const createRenderer = (nodeOps) => {
@@ -42,13 +43,15 @@ export const createRenderer = (nodeOps) => {
   const setupRenderReactive = (instance, container, anchor) => {
     let isMounted = false;
     const componentUpdateFn = () => {
+      const { render, setupState } = instance;
       if (!isMounted) {
-        const { render, setupState } = instance;
         const subTree = (instance.subTree = render.call(setupState));
         patch(null, subTree, container, anchor);
         isMounted = true;
       } else {
-        // update
+        const prevSubTree = instance.subTree;
+        const subTree = (instance.subTree = render.call(setupState));
+        patch(prevSubTree, subTree, container, anchor);
       }
     };
     instance.update = effect(componentUpdateFn);
@@ -73,18 +76,28 @@ export const createRenderer = (nodeOps) => {
     const { type, children } = n2;
     const el = (n2.el = nodeOps.createElement(type));
     children.forEach((child) => {
-      if (typeof child === "string") {
+      if (typeof child === "string" || typeof child === "number") {
         nodeOps.setTextContent(el, child);
       } else {
-        patch(null, el, anchor);
+        patch(null, child, el, anchor);
       }
     });
     nodeOps.insert(el, container, anchor);
   };
-
+  const updateElement = (n1, n2, container, anchor) => {
+    if (isSameVNode(n1, n2)) {
+      console.log(n1, n2);
+    } else {
+      // n2 replace n1
+      nodeOps.remove(n1.el);
+      patch(null, n2, container, anchor);
+    }
+  };
   const processElement = (n1, n2, container, anchor) => {
     if (!n1) {
       mountElement(n2, container, anchor);
+    } else {
+      updateElement(n1, n2, container, anchor);
     }
   };
   const patch = (n1, n2, container, anchor = null) => {
@@ -99,11 +112,14 @@ export const createRenderer = (nodeOps) => {
   };
 
   const render = (vnode, container) => {
-    patch(null, vnode, container);
+    patch(container._vnode || null, vnode, container);
+    // _vnode is old vnode
+    container._vnode = vnode;
   };
 
   return {
     render,
+    patch,
     createApp: apiCreateApp(render),
   };
 };

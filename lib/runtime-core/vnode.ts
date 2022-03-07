@@ -11,3 +11,5 @@ export const createVNode = (
     children,
   };
 };
+
+export const isSameVNode = (n1, n2): boolean => n1 === n2 && n1.key === n2.key;

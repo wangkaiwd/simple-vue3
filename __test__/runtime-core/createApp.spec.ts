@@ -1,7 +1,11 @@
 // import { createApp, defineComponent, h, reactive } from 'vue';
-import { createApp, h, reactive } from '../../lib';
+import { createApp, h, reactive, ref } from '../../lib';
 
 describe('RuntimeCore/CreateApp', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.spyOn(global, 'setTimeout');
+  });
   it('should render root component', () => {
     const app = document.createElement('div');
     const App = {
@@ -40,5 +44,53 @@ describe('RuntimeCore/CreateApp', () => {
       }
     };
     createApp(App).mount(app);
+  });
+  it('should update with different element', () => {
+    const app = document.createElement('div');
+    const App = {
+      name: 'App',
+      setup () {
+        const visible = ref(false);
+        setTimeout(() => {
+          visible.value = true;
+        }, 1000);
+        return {
+          visible
+        };
+      },
+      render () {
+        return this.visible ? h('h2', {}, 1) : h('h3', {}, 2);
+      }
+    };
+    createApp(App).mount(app);
+    expect(app.children.length).toBe(1);
+    expect(app.children[0].outerHTML).toBe('<h3>2</h3>');
+
+    jest.runOnlyPendingTimers();
+    expect(app.children[0].outerHTML).toBe('<h2>1</h2>');
+  });
+  it('should update when children is text', () => {
+    const app = document.createElement('div');
+    const App = {
+      name: 'App',
+      setup () {
+        const visible = ref(false);
+        setTimeout(() => {
+          visible.value = true;
+        }, 1000);
+        return {
+          visible
+        };
+      },
+      render () {
+        return this.visible ? h('h2', {}, 1) : h('h2', {}, 2);
+      }
+    };
+    createApp(App).mount(app);
+    expect(app.children.length).toBe(1);
+    expect(app.children[0].outerHTML).toBe('<h2>2</h2>');
+
+    jest.runOnlyPendingTimers();
+    expect(app.children[0].outerHTML).toBe('<h2>1</h2>');
   });
 });
