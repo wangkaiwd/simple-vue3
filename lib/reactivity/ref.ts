@@ -2,6 +2,8 @@ import { reactive } from "./reactive";
 import { track, trigger } from "./effect";
 
 class RefImpl {
+  public readonly __v_isRef = true;
+
   private _value: any;
 
   constructor(target: any) {
@@ -46,3 +48,7 @@ export const ref = <T>(value: T) => createRef(value);
 export const toRef = (target: Record<string, any>, prop: string) => {
   return new ObjectRefImpl(target, prop);
 };
+
+export const isRef = (value: any) => value.__v_isRef;
+
+export const unref = (value) => (isRef(value) ? value.value : value);

@@ -23,8 +23,10 @@ export const apiCreateApp = (render) => {
       _instance: null,
       use() {},
       mount(container) {
-        const vnode = createVNode(rootComponent, rootProps);
+        // virtual node
+        const vnode = createVNode(rootComponent, rootProps || {});
         render(vnode, container);
+        return app;
       },
     });
     return app;

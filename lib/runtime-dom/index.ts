@@ -1,24 +1,20 @@
-import { patch } from "../runtime-core/patch";
-import { effect } from "../reactivity";
+import { nodeOps } from "./nodeOps";
+import { patchProp } from "./patchProp";
+import { createRenderer } from "../runtime-core/renderer";
 
 export const createApp = (rootComponent: any, rootProps?: any) => {
-  const app = {
-    mount(selector: string | HTMLElement) {
-      const container =
-        typeof selector === "string"
-          ? document.querySelector(selector)
-          : selector;
-      const { setup, render } = rootComponent;
-      const setupState = setup(
-        {},
-        { emit: {}, attrs: rootProps, expose: () => {}, slots: {} }
-      );
-      effect(() => {
-        container.innerHTML = "";
-        const subTree = render.call(setupState);
-        patch(subTree, null, container);
-      });
-    },
+  const app = createRenderer({ patchProp, ...nodeOps }).createApp(
+    rootComponent,
+    rootProps
+  );
+  const mount = app.mount;
+  app.mount = (container) => {
+    container =
+      typeof container === "string"
+        ? document.querySelector(container)
+        : container;
+    container.innerHTML = "";
+    return mount(container);
   };
   return app;
 };
