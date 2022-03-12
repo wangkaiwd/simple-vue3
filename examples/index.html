@@ -6,19 +6,32 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <!--  <script src="../node_modules/vue/dist/vue.runtime.global.js"></script>-->
-  <script src="../build/simple-vue3.global.js"></script>
+  <script src="../node_modules/vue/dist/vue.runtime.global.js"></script>
+  <!--  <script src="../build/simple-vue3.global.js"></script>-->
 </head>
 <body>
+<div id="app"></div>
 <script>
-  // const { reactive, effect } = SimpleVue3;
-  // const person = reactive({ name: 'xx' });
-  // const fn = () => {
-  //   console.log(person.name);
-  // };
-  // effect(fn);
-  // person.name = 'yy';
-
+  const { reactive, createApp, onMounted, ref, h } = Vue;
+  const App = {
+    name: 'App',
+    setup () {
+      const count = ref(0);
+      onMounted(() => {
+        count.value++;
+      });
+      onMounted(() => {
+        count.value++;
+      });
+      return {
+        count
+      };
+    },
+    render () {
+      return h('div', {}, this.count);
+    }
+  };
+  createApp(App).mount('#app');
 </script>
 </body>
 </html>

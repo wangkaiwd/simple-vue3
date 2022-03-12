@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../build/simple-vue3.global.js"></script>
+  <!--  <script src="../node_modules/vue/dist/vue.runtime.global.js"></script>-->
+</head>
+<body>
+<div id="app"></div>
+<script>
+  const { h, render } = SimpleVue3;
+  // const { h, render } = Vue;
+  const app = document.querySelector('#app');
+  render(h('ul', { id: 'ul' }, [
+    h('li', { key: 'A' }, 'A'),
+    h('li', { key: 'B' }, 'B'),
+    h('li', { key: 'C' }, 'C'),
+    h('li', { key: 'D' }, 'D'),
+    h('li', { key: 'E' }, 'E'),
+    h('li', { key: 'F' }, 'F'),
+    h('li', { key: 'G' }, 'G'),
+  ]), app);
+  setTimeout(() => {
+    render(h('ul', { id: 'ul' }, [
+      h('li', { key: 'A' }, 'A'),
+      h('li', { key: 'B' }, 'B'),
+      h('li', { key: 'E' }, 'E'),
+      h('li', { key: 'D' }, 'D'),
+      h('li', { key: 'C' }, 'C'),
+      h('li', { key: 'H' }, 'H'),
+      h('li', { key: 'F' }, 'F'),
+      h('li', { key: 'G' }, 'G'),
+    ]), app);
+  }, 10000);
+</script>
+</body>
+</html>

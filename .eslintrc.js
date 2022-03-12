@@ -43,7 +43,8 @@ module.exports = {
     'no-empty-function': 0,
     'no-useless-constructor': 0,
     'max-classes-per-file': 0,
-    'no-multi-assign': 0
+    'no-multi-assign': 0,
+    'no-continue': 0
   },
   settings: {
     'import/extensions': 'off',

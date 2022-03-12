@@ -4,9 +4,7 @@ const patchClass = (el, next) => {
 
 const patchStyle = (el, prev, next) => {
   for (const key in next) {
-    if (!(key in prev)) {
-      el.style[key] = next[key];
-    }
+    el.style[key] = next[key];
   }
   for (const key in prev) {
     if (!(key in next)) {
