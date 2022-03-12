@@ -119,7 +119,7 @@ export const createRenderer = (nodeOps) => {
         // old vnode the same as new vnode , i === e2 is true
         const nextPos = e2 + 1;
         // find e2 next element, it has same vnode in c1
-        const reference = c1[nextPos].el || null;
+        const reference = nextPos < c2.length ? c2[nextPos].el : null;
         while (i <= e2) {
           // insert new vnode
           const n2 = c2[i];
