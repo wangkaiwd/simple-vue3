@@ -2,8 +2,9 @@ import { apiCreateApp } from "./apiCreateApp";
 import { invokeArrayFns, isBuiltInHtmlTag } from "../shared/utils";
 import { effect } from "../reactivity";
 import { isSameVNode } from "./vnode";
-import { getCurrentInstance, setupComponent } from "./components";
+import { setupComponent } from "./components";
 import { getSequence } from "./getSequence";
+import { queueJob } from "./schedular";
 
 let uid = 0;
 export const createRenderer = (nodeOps) => {
@@ -37,7 +38,6 @@ export const createRenderer = (nodeOps) => {
         const { m } = instance;
         if (m) {
           invokeArrayFns(m);
-          console.log("current", getCurrentInstance());
         }
       } else {
         const prevSubTree = instance.subTree;
@@ -45,7 +45,9 @@ export const createRenderer = (nodeOps) => {
         patch(prevSubTree, subTree, container, anchor);
       }
     };
-    instance.update = effect(componentUpdateFn);
+    instance.update = effect(componentUpdateFn, {
+      scheduler: () => queueJob(componentUpdateFn),
+    });
   };
   const mountComponent = (n2, container, anchor) => {
     // 1. create component instance

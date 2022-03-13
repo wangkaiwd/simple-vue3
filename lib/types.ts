@@ -1,7 +1,8 @@
-export type Fn = () => any;
+export type Fn = (...args: any[]) => any;
 
 export interface EffectFn {
   (): Fn;
+
   id: number;
   scheduler?: () => any;
 }

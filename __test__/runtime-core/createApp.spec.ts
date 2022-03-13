@@ -1,5 +1,5 @@
 // import { createApp, defineComponent, h, reactive } from 'vue';
-import { createApp, h, reactive, ref } from '../../lib';
+import { createApp, h, nextTick, onMounted, reactive, ref } from '../../lib';
 
 describe('RuntimeCore/CreateApp', () => {
   beforeEach(() => {
@@ -92,5 +92,28 @@ describe('RuntimeCore/CreateApp', () => {
 
     jest.runOnlyPendingTimers();
     expect(app.children[0].outerHTML).toBe('<h2>1</h2>');
+  });
+  it('should async update', () => {
+    const app = document.createElement('div');
+    const App = {
+      name: 'App',
+      setup () {
+        const visible = ref(false);
+        onMounted(() => {
+          visible.value = true;
+          expect(app.children[0].outerHTML).toBe('<h2>2</h2>');
+          nextTick(() => {
+            expect(app.children[0].outerHTML).toBe('<h2>1</h2>');
+          });
+        });
+        return {
+          visible
+        };
+      },
+      render () {
+        return this.visible ? h('h2', {}, 1) : h('h2', {}, 2);
+      }
+    };
+    createApp(App).mount(app);
   });
 });
