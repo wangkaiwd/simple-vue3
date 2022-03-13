@@ -1,8 +1,8 @@
 import { apiCreateApp } from "./apiCreateApp";
-import { isBuiltInHtmlTag } from "../shared/utils";
+import { invokeArrayFns, isBuiltInHtmlTag } from "../shared/utils";
 import { effect } from "../reactivity";
 import { isSameVNode } from "./vnode";
-import { setupComponent } from "./components";
+import { getCurrentInstance, setupComponent } from "./components";
 import { getSequence } from "./getSequence";
 
 let uid = 0;
@@ -20,6 +20,10 @@ export const createRenderer = (nodeOps) => {
       expose: null,
       slots: null,
       subTree: null,
+      bm: null,
+      m: null,
+      bu: null,
+      u: null,
     };
   };
   const setupRenderReactive = (instance, container, anchor) => {
@@ -30,6 +34,11 @@ export const createRenderer = (nodeOps) => {
         const subTree = (instance.subTree = render.call(setupState));
         patch(null, subTree, container, anchor);
         isMounted = true;
+        const { m } = instance;
+        if (m) {
+          invokeArrayFns(m);
+          console.log("current", getCurrentInstance());
+        }
       } else {
         const prevSubTree = instance.subTree;
         const subTree = (instance.subTree = render.call(setupState));
